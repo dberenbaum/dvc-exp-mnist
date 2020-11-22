@@ -1,6 +1,4 @@
 """Model training and evaluation."""
-import click
-import json
 import os
 import torch
 import torch.nn.functional as F
@@ -71,7 +69,6 @@ def get_metrics(y, y_pred):
     return metrics
 
 
-@click.command()
 def main():
     """Train model and evaluate on test data."""
     model = ConvNet()
@@ -94,8 +91,8 @@ def main():
             torch.save(model.state_dict(), "model.pt")
             y_pred = predict(model, x_test, y_test)
             metrics = get_metrics(y_test, y_pred)
-            with open("metrics.json", "w") as f:
-                json.dump(metrics, f)
+            with open("metrics.yaml", "w") as f:
+                yaml.dump(metrics, f)
             make_checkpoint()
 
 
