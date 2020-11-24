@@ -6,6 +6,6 @@ download:
     size: 174
   outs:
   - path: data/MNIST
-    md5: d5308593136253d0a12ea6c0f7e1b807.dir
+    md5: 2e9e8353b3b3d93d0b7f74de62481a9a.dir
     size: 121986948
     nfiles: 10
