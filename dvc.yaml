@@ -14,6 +14,18 @@ stages:
     - lr
     - weight_decay
     outs:
+    - model.pt
+    metrics:
+    - metrics.yaml
+  train_checkpoint:
+    cmd: python train.py --checkpoints
+    deps:
+    - data/MNIST
+    - train.py
+    params:
+    - lr
+    - weight_decay
+    outs:
     - model.pt:
         checkpoint: true
     metrics:

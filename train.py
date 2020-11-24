@@ -1,5 +1,6 @@
 """Model training and evaluation."""
 import os
+import click
 import torch
 import torch.nn.functional as F
 import torchvision
@@ -9,6 +10,13 @@ from dvc.api import make_checkpoint
 
 EPOCHS = 10
 CHECKPOINT = 5
+
+
+def transform(dataset):
+    """Get inputs and targets from dataset."""
+    x = dataset.data.reshape(len(dataset.data), 1, 28, 28)/255
+    y = dataset.targets
+    return x, y
 
 
 class ConvNet(torch.nn.Module):
@@ -29,13 +37,6 @@ class ConvNet(torch.nn.Module):
         x = F.relu(self.dense1(x))
         x = self.dense2(x)
         return x
-
-
-def transform(dataset):
-    """Get inputs and targets from dataset."""
-    x = dataset.data.reshape(len(dataset.data), 1, 28, 28)/255
-    y = dataset.targets
-    return x, y
 
 
 def train(model, x, y, lr, weight_decay):
@@ -77,11 +78,13 @@ def evaluate(model, x, y):
         yaml.dump(metrics, f)
 
 
-def main():
+@click.command()
+@click.option("--checkpoints/--no-checkpoints", default=False)
+def main(checkpoints):
     """Train model and evaluate on test data."""
     model = ConvNet()
     # Load model.
-    if os.path.exists("model.pt"):
+    if checkpoints and os.path.exists("model.pt"):
         model.load_state_dict(torch.load("model.pt"))
     # Load params.
     with open("params.yaml") as f:
@@ -95,10 +98,14 @@ def main():
     for i in range(1, EPOCHS+1):
         train(model, x_train, y_train, params["lr"], params["weight_decay"])
         # Evaluate and checkpoint every CHECKPOINT epochs.
-        if not i % CHECKPOINT:
+        if checkpoints and (not i % CHECKPOINT):
             torch.save(model.state_dict(), "model.pt")
             evaluate(model, x_test, y_test)
             make_checkpoint()
+    # Evaluate and save if not already done via checkpoints.
+    if not checkpoints:
+        torch.save(model.state_dict(), "model.pt")
+        evaluate(model, x_test, y_test)
 
 
 if __name__ == "__main__":
