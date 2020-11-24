@@ -1,5 +1,4 @@
 """Model training and evaluation."""
-import click
 import os
 import torch
 import torch.nn.functional as F
@@ -10,13 +9,6 @@ from dvc.api import make_checkpoint
 
 EPOCHS = 10
 CHECKPOINT = 5
-
-
-def transform(dataset):
-    """Get inputs and targets from dataset."""
-    x = dataset.data.reshape(len(dataset.data), 1, 28, 28)/255
-    y = dataset.targets
-    return x, y
 
 
 class ConvNet(torch.nn.Module):
@@ -39,6 +31,13 @@ class ConvNet(torch.nn.Module):
         return x
 
 
+def transform(dataset):
+    """Get inputs and targets from dataset."""
+    x = dataset.data.reshape(len(dataset.data), 1, 28, 28)/255
+    y = dataset.targets
+    return x, y
+
+
 def train(model, x, y, lr, weight_decay):
     """Train a single epoch."""
     model.train()
@@ -52,7 +51,7 @@ def train(model, x, y, lr, weight_decay):
     optimizer.step()
 
 
-def predict(model, x, y):
+def predict(model, x):
     """Get model prediction scores."""
     model.eval()
     with torch.no_grad():
@@ -72,15 +71,13 @@ def get_metrics(y, y_pred):
 
 def evaluate(model, x, y):
     """Evaluate model and save metrics."""
-    score = predict(model, x, y)
+    scores = predict(model, x)
     metrics = get_metrics(y, scores)
     with open("metrics.yaml", "w") as f:
         yaml.dump(metrics, f)
 
 
-@click.command()
-@click.option("--checkpoints/--no-checkpoints", default=False)
-def main(checkpoints):
+def main():
     """Train model and evaluate on test data."""
     model = ConvNet()
     # Load model.
@@ -98,14 +95,10 @@ def main(checkpoints):
     for i in range(1, EPOCHS+1):
         train(model, x_train, y_train, params["lr"], params["weight_decay"])
         # Evaluate and checkpoint every CHECKPOINT epochs.
-        if checkpoints and (not i % CHECKPOINT):
+        if not i % CHECKPOINT:
             torch.save(model.state_dict(), "model.pt")
             evaluate(model, x_test, y_test)
             make_checkpoint()
-    # Evaluate and save if not already done via checkpoints.
-    if not checkpoints:
-        torch.save(model.state_dict(), "model.pt")
-        evaluate(model, x_test, y_test)
 
 
 if __name__ == "__main__":
