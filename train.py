@@ -1,4 +1,5 @@
 """Model training and evaluation."""
+import click
 import os
 import torch
 import torch.nn.functional as F
@@ -69,7 +70,17 @@ def get_metrics(y, y_pred):
     return metrics
 
 
-def main():
+def evaluate(model, x, y):
+    """Evaluate model and save metrics."""
+    score = predict(model, x, y)
+    metrics = get_metrics(y, scores)
+    with open("metrics.yaml", "w") as f:
+        yaml.dump(metrics, f)
+
+
+@click.command()
+@click.option("--checkpoints/--no-checkpoints", default=False)
+def main(checkpoints):
     """Train model and evaluate on test data."""
     model = ConvNet()
     # Load model.
@@ -87,13 +98,14 @@ def main():
     for i in range(1, EPOCHS+1):
         train(model, x_train, y_train, params["lr"], params["weight_decay"])
         # Evaluate and checkpoint every CHECKPOINT epochs.
-        if not i % CHECKPOINT:
+        if checkpoints and (not i % CHECKPOINT):
             torch.save(model.state_dict(), "model.pt")
-            y_pred = predict(model, x_test, y_test)
-            metrics = get_metrics(y_test, y_pred)
-            with open("metrics.yaml", "w") as f:
-                yaml.dump(metrics, f)
+            evaluate(model, x_test, y_test)
             make_checkpoint()
+    # Evaluate and save if not already done via checkpoints.
+    if not checkpoints:
+        torch.save(model.state_dict(), "model.pt")
+        evaluate(model, x_test, y_test)
 
 
 if __name__ == "__main__":
