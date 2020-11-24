@@ -6,7 +6,7 @@ stages:
     outs:
     - data/MNIST
   train:
-    cmd: python train.py
+    cmd: python train.py --model_path=model.pt --metrics_path=metrics.yaml
     deps:
     - data/MNIST
     - train.py
@@ -18,7 +18,7 @@ stages:
     metrics:
     - metrics.yaml
   train_checkpoint:
-    cmd: python train.py --checkpoints
+    cmd: python train.py --model_path=model_checkpoint.pt --metrics_path=metrics_checkpoint.yaml --checkpoint=5
     deps:
     - data/MNIST
     - train.py
@@ -26,7 +26,7 @@ stages:
     - lr
     - weight_decay
     outs:
-    - model.pt:
+    - model_checkpoint.pt:
         checkpoint: true
     metrics:
-    - metrics.yaml
+    - metrics_checkpoint.yaml

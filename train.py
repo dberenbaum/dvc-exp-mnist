@@ -8,10 +8,6 @@ import yaml
 from dvc.api import make_checkpoint
 
 
-EPOCHS = 10
-CHECKPOINT = 5
-
-
 def transform(dataset):
     """Get inputs and targets from dataset."""
     x = dataset.data.reshape(len(dataset.data), 1, 28, 28)/255
@@ -70,22 +66,26 @@ def get_metrics(y, y_pred):
     return metrics
 
 
-def evaluate(model, x, y):
+def evaluate(model, x, y, metrics_path):
     """Evaluate model and save metrics."""
     scores = predict(model, x)
     metrics = get_metrics(y, scores)
-    with open("metrics.yaml", "w") as f:
+    with open(metrics_path, "w") as f:
         yaml.dump(metrics, f)
 
 
 @click.command()
-@click.option("--checkpoints/--no-checkpoints", default=False)
-def main(checkpoints):
+@click.option("--model_path", required=True)
+@click.option("--metrics_path", required=True)
+@click.option("--epochs", default=10)
+@click.option("--checkpoint", default=0)
+def main(model_path, metrics_path, epochs, checkpoint):
     """Train model and evaluate on test data."""
     model = ConvNet()
+    # Set output destinations
     # Load model.
-    if checkpoints and os.path.exists("model.pt"):
-        model.load_state_dict(torch.load("model.pt"))
+    if checkpoint and os.path.exists(model_path):
+        model.load_state_dict(torch.load(model_path))
     # Load params.
     with open("params.yaml") as f:
         params = yaml.safe_load(f)
@@ -95,17 +95,17 @@ def main(checkpoints):
     mnist_test = torchvision.datasets.MNIST("data", train=False)
     x_test, y_test = transform(mnist_test)
     # Iterate over training epochs.
-    for i in range(1, EPOCHS+1):
+    for i in range(1, epochs+1):
         train(model, x_train, y_train, params["lr"], params["weight_decay"])
-        # Evaluate and checkpoint every CHECKPOINT epochs.
-        if checkpoints and (not i % CHECKPOINT):
-            torch.save(model.state_dict(), "model.pt")
-            evaluate(model, x_test, y_test)
+        # Evaluate every checkpoint epochs.
+        if checkpoint and (not i % checkpoint):
+            torch.save(model.state_dict(), model_path)
+            evaluate(model, x_test, y_test, metrics_path)
             make_checkpoint()
     # Evaluate and save if not already done via checkpoints.
-    if not checkpoints:
-        torch.save(model.state_dict(), "model.pt")
-        evaluate(model, x_test, y_test)
+    if not checkpoint:
+        torch.save(model.state_dict(), model_path)
+        evaluate(model, x_test, y_test, metrics_path)
 
 
 if __name__ == "__main__":
