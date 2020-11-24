@@ -1,0 +1,11 @@
+download:
+  cmd: python download.py
+  deps:
+  - path: download.py
+    md5: cb5ce0b4ebd31b30cf6aaf694bc47e46
+    size: 174
+  outs:
+  - path: data/MNIST
+    md5: 253290ba1b0b0a78b391b6dfb149ebd9.dir
+    size: 121986948
+    nfiles: 10
