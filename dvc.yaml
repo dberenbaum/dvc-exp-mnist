@@ -17,16 +17,3 @@ stages:
     - model.pt
     metrics:
     - metrics.yaml
-  train_checkpoint:
-    cmd: python train.py --model_path=model_checkpoint.pt --metrics_path=metrics_checkpoint.yaml --checkpoint=5
-    deps:
-    - data/MNIST
-    - train.py
-    params:
-    - lr
-    - weight_decay
-    outs:
-    - model_checkpoint.pt:
-        checkpoint: true
-    metrics:
-    - metrics_checkpoint.yaml

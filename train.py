@@ -5,7 +5,6 @@ import torch
 import torch.nn.functional as F
 import torchvision
 import yaml
-from dvc.api import make_checkpoint
 
 
 def transform(dataset):
@@ -78,14 +77,9 @@ def evaluate(model, x, y, metrics_path):
 @click.option("--model_path", required=True)
 @click.option("--metrics_path", required=True)
 @click.option("--epochs", default=10)
-@click.option("--checkpoint", default=0)
-def main(model_path, metrics_path, epochs, checkpoint):
+def main(model_path, metrics_path, epochs):
     """Train model and evaluate on test data."""
     model = ConvNet()
-    # Set output destinations
-    # Load model.
-    if checkpoint and os.path.exists(model_path):
-        model.load_state_dict(torch.load(model_path))
     # Load params.
     with open("params.yaml") as f:
         params = yaml.safe_load(f)
@@ -97,15 +91,9 @@ def main(model_path, metrics_path, epochs, checkpoint):
     # Iterate over training epochs.
     for i in range(1, epochs+1):
         train(model, x_train, y_train, params["lr"], params["weight_decay"])
-        # Evaluate every checkpoint epochs.
-        if checkpoint and (not i % checkpoint):
-            torch.save(model.state_dict(), model_path)
-            evaluate(model, x_test, y_test, metrics_path)
-            make_checkpoint()
-    # Evaluate and save if not already done via checkpoints.
-    if not checkpoint:
-        torch.save(model.state_dict(), model_path)
-        evaluate(model, x_test, y_test, metrics_path)
+    # Evaluate and save.
+    torch.save(model.state_dict(), model_path)
+    evaluate(model, x_test, y_test, metrics_path)
 
 
 if __name__ == "__main__":
