@@ -1,8 +1,10 @@
 name: dvc
 channels:
   - defaults
+  - pytorch
 dependencies:
   - python=3.8.5
+  - pip
   - torchvision=0.8.1
   - pytorch=1.7.0
   - jupyter=1.0.0
