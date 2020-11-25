@@ -15,10 +15,10 @@ train:
     md5: 82eb8144487a09b07cee779ac63b64e3
   params:
     params.yaml:
-      lr: 0.01
+      lr: 0.001
       weight_decay: 0
   outs:
   - path: metrics.yaml
-    md5: 99eb93cc65778aa9b1914643a8008146
+    md5: 0f6143e36cc494963e1b4fae99b2b19a
   - path: model.pt
-    md5: 4e33bfde5220e5ce13300c4e351f1627
+    md5: 1a69324bc175567691b14ff83a209309
