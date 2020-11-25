@@ -6,27 +6,27 @@ download:
     size: 174
   outs:
   - path: data/MNIST
-    md5: 9d1cfb7573921a29dbd486972ba278dd.dir
+    md5: f066f393e80e605183b3a2a16a9d733f.dir
     size: 121986948
     nfiles: 10
 train:
   cmd: python train.py --model_path=model.pt --metrics_path=metrics.yaml
   deps:
   - path: data/MNIST
-    md5: 9d1cfb7573921a29dbd486972ba278dd.dir
+    md5: f066f393e80e605183b3a2a16a9d733f.dir
     size: 121986948
     nfiles: 10
   - path: train.py
-    md5: 1b6940d140f526dacc70ccdfff4332f3
-    size: 3430
+    md5: 82eb8144487a09b07cee779ac63b64e3
+    size: 2887
   params:
     params.yaml:
       lr: 0.001
       weight_decay: 0
   outs:
   - path: metrics.yaml
-    md5: 2ace15ae814b5b26ef50c95995acb771
+    md5: b97b9aecd0ed7dae72b65dfb70a18fdd
     size: 37
   - path: model.pt
-    md5: 385b197807a405937f7fffa32a5d5853
+    md5: 1020a73980b46926aab58874c33cc8e6
     size: 105079
