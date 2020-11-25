@@ -10,4 +10,4 @@ dependencies:
   - jupyter=1.0.0
   - cpuonly=1.0
   - pip:
-    - dvc==1.10.1
+    - dvc==1.10.2
