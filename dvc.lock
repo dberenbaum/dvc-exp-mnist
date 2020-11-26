@@ -9,3 +9,24 @@ download:
     md5: 6d7108905440d673c7c9809bef3bc32a.dir
     size: 121986948
     nfiles: 10
+train:
+  cmd: python train.py
+  deps:
+  - path: data/MNIST
+    md5: 6d7108905440d673c7c9809bef3bc32a.dir
+    size: 121986948
+    nfiles: 10
+  - path: train.py
+    md5: 4a9e7f9448cf8eb7fd0da4c0769ac3a2
+    size: 2952
+  params:
+    params.yaml:
+      lr: 0.001
+      weight_decay: 0
+  outs:
+  - path: metrics.yaml
+    md5: fba1c082c554375533969c9992c5b798
+    size: 37
+  - path: model.pt
+    md5: 211dcae071ee0fad8626ddfcb5fabc4b
+    size: 105079
