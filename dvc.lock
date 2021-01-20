@@ -27,8 +27,8 @@ stages:
         weight_decay: 0.1
     outs:
     - path: metrics.yaml
-      md5: 1a8f796dd32d45fe4022230cd65051dd
+      md5: 5d7bfbe5370b60a013bf89bfebc1b956
       size: 36
     - path: model.pt
-      md5: 7a89e96c858ac822a60ad112eac3f36e
+      md5: 63b0c7df52d974a6ab8ea171b307dee7
       size: 105079
