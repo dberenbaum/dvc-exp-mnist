@@ -25,8 +25,8 @@ train:
       weight_decay: 0.1
   outs:
   - path: metrics.yaml
-    md5: f90eb8f7a0c0499c6772213ef3b7c01d
+    md5: 1bd5d60f0487c505b0400b0e82c7cef5
     size: 37
   - path: model.pt
-    md5: dc79c8222d2cb3abcb09e5fe7e6d5c0a
+    md5: abb1cc2a3a75512d7453104225022705
     size: 105079
