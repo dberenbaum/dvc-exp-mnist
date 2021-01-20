@@ -1,4 +1,4 @@
-name: dvc
+name: dvc-exp-mnist
 channels:
   - defaults
   - pytorch
@@ -10,4 +10,4 @@ dependencies:
   - jupyter=1.0.0
   - cpuonly=1.0
   - pip:
-    - dvc==1.10.2
+    - dvc==1.11.10
