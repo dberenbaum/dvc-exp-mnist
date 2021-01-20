@@ -11,3 +11,24 @@ stages:
       md5: 68e65ec6ba86ac62907175bbffb325f5.dir
       size: 121986948
       nfiles: 10
+  train:
+    cmd: python train.py
+    deps:
+    - path: data/MNIST
+      md5: 68e65ec6ba86ac62907175bbffb325f5.dir
+      size: 121986948
+      nfiles: 10
+    - path: train.py
+      md5: 4a9e7f9448cf8eb7fd0da4c0769ac3a2
+      size: 2952
+    params:
+      params.yaml:
+        lr: 0.001
+        weight_decay: 0.1
+    outs:
+    - path: metrics.yaml
+      md5: 1a8f796dd32d45fe4022230cd65051dd
+      size: 36
+    - path: model.pt
+      md5: 7a89e96c858ac822a60ad112eac3f36e
+      size: 105079
