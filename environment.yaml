@@ -8,3 +8,5 @@ dependencies:
   - pytorch=1.7.0
   - jupyter=1.0.0
   - cpuonly=1.0
+  - pip:
+      - git+https://github.com/iterative/dvc.git
