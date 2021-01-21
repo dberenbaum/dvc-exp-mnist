@@ -3,6 +3,8 @@ FROM jupyter/base-notebook
 # Install git
 USER root
 RUN apt-get update && apt-get install -yq git
+RUN git clone https://github.com/iterative/dvc.git
+RUN cd dvc && pip install -e .
 
 # Clone repo and update dependencies
 USER jovyan
