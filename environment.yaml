@@ -1,4 +1,3 @@
-name: dvc-exp-mnist
 channels:
   - defaults
   - pytorch
