@@ -9,4 +9,4 @@ USER jovyan
 RUN git clone https://github.com/dberenbaum/dvc-exp-mnist.git
 WORKDIR dvc-exp-mnist
 RUN git checkout 2.0
-RUN conda env update -f environment.yaml
+RUN conda env update -n base -f environment.yaml
