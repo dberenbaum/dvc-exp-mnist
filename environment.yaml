@@ -1,13 +1,7 @@
-name: dvc
-channels:
-  - defaults
-  - pytorch
 dependencies:
+  - keras=2.4.3
   - python=3.8.5
   - pip
-  - torchvision=0.8.1
-  - pytorch=1.7.0
   - jupyter=1.0.0
-  - cpuonly=1.0
   - pip:
-    - dvc==1.10.2
+    - git+https://github.com/iterative/dvc.git
