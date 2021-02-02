@@ -8,5 +8,6 @@ RUN apt-get update && apt-get install -yq git
 USER jovyan
 RUN git clone https://github.com/dberenbaum/dvc-exp-mnist.git
 WORKDIR dvc-exp-mnist
+RUN git fetch
 RUN git checkout keras
 RUN conda env update -n base -f environment.yaml
