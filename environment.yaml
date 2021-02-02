@@ -1,7 +1,7 @@
 dependencies:
-  - keras=2.4.3
-  - python=3.8.5
+  - keras
+  - python
   - pip
-  - jupyter=1.0.0
+  - jupyter
   - pip:
     - git+https://github.com/iterative/dvc.git
