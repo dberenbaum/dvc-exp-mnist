@@ -1,7 +1,4 @@
 dependencies:
-  - keras
-  - python
-  - pip
-  - jupyter
   - pip:
+    - tensorflow
     - git+https://github.com/iterative/dvc.git

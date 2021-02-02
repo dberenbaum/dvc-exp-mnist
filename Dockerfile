@@ -1,5 +1,8 @@
 FROM jupyter/base-notebook
 
+# Enable Jupyter Lab
+ENV JUPYTER_ENABLE_LAB=yes
+
 # Install git
 USER root
 RUN apt-get update && apt-get install -yq git
