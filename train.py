@@ -3,6 +3,7 @@ import yaml
 import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
+from tensorflow.random import set_seed
 
 from dvc.api import make_checkpoint
 
@@ -25,6 +26,7 @@ def get_data():
     return (x_train, y_train), (x_test, y_test)
 
 def get_model():
+    set_seed(0)
     model= keras.Sequential(
     [
         keras.Input(shape=input_shape),

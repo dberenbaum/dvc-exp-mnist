@@ -1,10 +1,18 @@
 stages:
+  # Arbitraty name for model training stage
   train:
+    # Command to execute
     cmd: python train.py
+    # Dependencies
     deps:
     - train.py
+    # Outputs
     outs:
     - model.tf:
+        # Required for checkpoints
         checkpoint: true
+    # Metrics
     metrics:
-    - metrics.yaml
+    - metrics.yaml:
+        # Track with git instead of dvc
+        cache: false
